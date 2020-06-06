@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Navigation from '../navigation/Navigation';
-import Landing from '../landing/Landing';
-import SignUp from '../singUp/SignUp';
-import SignIn from '../signIn/SignIn';
-import PasswordForget from '../passwordForget/PasswordForget';
-import Home from '../home/home';
-import Account from '../account/Account';
-import Admin from '../admin/Admin';
+import Navigation from '../navigation';
+import Landing from '../landing';
+import SignUpPage from '../signUp';
+import SignIn from '../signIn';
+import PasswordForget from '../passwordForget';
+import Home from '../home';
+import Account from '../account';
+import Admin from '../admin';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -18,7 +18,7 @@ const App: React.FC = () => (
       <Navigation />
       <hr />
       <Route exact path={ROUTES.LANDING} component={Landing} />
-      <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
       <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
       <Route exact path={ROUTES.HOME} component={Home} />
