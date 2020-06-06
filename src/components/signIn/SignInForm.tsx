@@ -7,21 +7,17 @@ import * as MESSAGES from '../../constants/messages';
 import * as ROUTES from '../../constants/routes';
 
 const INITIAL_STATE = {
-  username: '',
   email: '',
-  passwordOne: '',
-  passwordTwo: '',
+  password: '',
   error: (null as unknown) as { message: string },
 };
 
-const SignUpForm: React.FC = () => {
+const SignInForm: React.FC = () => {
   const [state, setState] = useState(INITIAL_STATE);
   const history = useHistory();
   const firebase = useContext(FirebaseContext);
 
-  console.log('SignUp');
-
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const subnmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!firebase) {
@@ -29,11 +25,11 @@ const SignUpForm: React.FC = () => {
       return;
     }
 
-    const { username, email, passwordOne } = state;
+    const { email, password } = state;
 
     firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then((authUser) => {
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
         setState({ ...INITIAL_STATE });
         history.push(ROUTES.HOME);
       })
@@ -46,17 +42,15 @@ const SignUpForm: React.FC = () => {
     setState({ ...state, [event.currentTarget.name]: event.currentTarget.value });
   };
 
-  const { username, email, passwordOne, passwordTwo, error } = state;
-  const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
+  const { email, password, error } = state;
+  const isInvalid = password === '' || email === '';
 
   return (
-    <form onSubmit={submitHandler}>
-      <input name="username" value={username} onChange={changeHandler} type="text" placeholder="Username" />
-      <input name="email" value={email} onChange={changeHandler} type="text" placeholder="Email Address" />
-      <input name="passwordOne" value={passwordOne} onChange={changeHandler} type="password" placeholder="Password" />
-      <input name="passwordTwo" value={passwordTwo} onChange={changeHandler} type="password" placeholder="Confirm Password" />
+    <form onSubmit={subnmitHandler}>
+      <input name="email" value={email} onChange={changeHandler} type="text" placeholder="email" />
+      <input name="password" value={password} onChange={changeHandler} type="password" placeholder="password" />
       <button disabled={isInvalid} type="submit">
-        Sign Up
+        Sign In
       </button>
 
       {error && <p>{error.message}</p>}
@@ -64,4 +58,4 @@ const SignUpForm: React.FC = () => {
   );
 };
 
-export default SignUpForm;
+export default SignInForm;

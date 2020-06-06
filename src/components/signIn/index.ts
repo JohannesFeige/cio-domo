@@ -1,3 +1,5 @@
-import SignIn from './SignIn';
+import SignInPage from './SignInPage';
+import SignInForm from './SignInForm';
 
-export default SignIn;
+export default SignInPage;
+export { SignInForm };
