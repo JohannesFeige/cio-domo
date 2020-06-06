@@ -6,12 +6,15 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './components/app/App';
 import Firebase, { FirebaseContext } from './components/firebase';
+import { AuthProvider } from './components/session';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <AuthProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </AuthProvider>
   </FirebaseContext.Provider>,
   document.getElementById('root')
 );

@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/auth';
 
 const config = {
@@ -12,11 +12,18 @@ const config = {
 };
 
 class Firebase {
-  private auth: app.auth.Auth;
+  private auth: firebase.auth.Auth;
+  onAuthStateChange: (
+    nextOrObserver: firebase.Observer<any> | ((a: firebase.User | null) => any),
+    error?: (a: firebase.auth.Error) => any,
+    completed?: firebase.Unsubscribe
+  ) => firebase.Unsubscribe;
   constructor() {
-    app.initializeApp(config);
+    firebase.initializeApp(config);
 
-    this.auth = app.auth();
+    this.auth = firebase.auth();
+
+    this.onAuthStateChange = this.auth.onAuthStateChanged.bind(this.auth);
   }
 
   doCreateUserWithEmailAndPassword = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email, password);
