@@ -5,7 +5,7 @@ import Navigation from '../navigation';
 import Landing from '../landing';
 import SignUpPage from '../signUp';
 import SignInPage from '../signIn';
-import PasswordForget from '../passwordForget';
+import PasswordForgetPage from '../passwordForget';
 import Home from '../home';
 import Account from '../account';
 import Admin from '../admin';
@@ -32,7 +32,7 @@ const App: React.FC = () => {
         <Route exact path={ROUTES.LANDING} component={Landing} />
         <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+        <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
         <Route exact path={ROUTES.HOME} component={Home} />
         <Route exact path={ROUTES.ACCOUNT} component={Account} />
         <Route exact path={ROUTES.ADMIN} component={Admin} />
