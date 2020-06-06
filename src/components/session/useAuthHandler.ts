@@ -1,26 +1,24 @@
 import { useState } from 'react';
 
 const useAuthHandler = () => {
-  const [auth, setAuth] = useState<firebase.User | null>(null);
+  const [authUser, setAuthUser] = useState<firebase.User | null>(null);
 
   const setAuthStatus = (user: firebase.User) => {
-    if (auth && auth.uid === user.uid) {
+    if (authUser && authUser.uid === user.uid) {
       return;
     }
-    console.log('---setAuthStatus---');
-    setAuth(user);
+    setAuthUser(user);
   };
 
   const setUnauthStatus = () => {
-    if (auth === null) {
+    if (authUser === null) {
       return;
     }
-    console.log('---setUnauthStatus---');
-    setAuth(null);
+    setAuthUser(null);
   };
 
   return {
-    auth,
+    authUser,
     setAuthStatus,
     setUnauthStatus,
   };

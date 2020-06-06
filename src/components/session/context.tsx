@@ -4,7 +4,7 @@ import { useAuthHandler } from '.';
 type AuthContextType = ReturnType<typeof useAuthHandler>;
 
 export const AuthContext = React.createContext<AuthContextType>({
-  auth: null,
+  authUser: null,
   setAuthStatus: () => {},
   setUnauthStatus: () => {},
 });

@@ -19,7 +19,6 @@ const App: React.FC = () => {
   const authentication = useContext(AuthContext);
   useEffect(() => {
     const listener = firebase?.onAuthStateChange((authUser) => {
-      console.log('...authChanged', authUser);
       authUser ? authentication.setAuthStatus(authUser) : authentication.setUnauthStatus();
     });
     return () => listener?.();

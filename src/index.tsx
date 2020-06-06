@@ -5,17 +5,17 @@ import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
 import App from './components/app/App';
-import Firebase, { FirebaseContext } from './components/firebase';
+import { FirebaseProvider } from './components/firebase';
 import { AuthProvider } from './components/session';
 
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
+  <FirebaseProvider>
     <AuthProvider>
       <React.StrictMode>
         <App />
       </React.StrictMode>
     </AuthProvider>
-  </FirebaseContext.Provider>,
+  </FirebaseProvider>,
   document.getElementById('root')
 );
 
