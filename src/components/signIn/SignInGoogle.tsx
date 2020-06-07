@@ -34,11 +34,15 @@ const SignInGoogle: React.FC = () => {
           email: socialAuthUser.user.email,
         });
       })
-      .then((foo) => {
+      .then(() => {
         setState({ ...INITIAL_STATE });
         history.push(ROUTES.HOME);
       })
       .catch((error) => {
+        if (error.code === MESSAGES.ACCOUNT_ALREADY_EXISITS.CODE) {
+          error.message = MESSAGES.ACCOUNT_ALREADY_EXISITS.MESSAGE;
+        }
+
         setState({ ...state, error });
       });
   };

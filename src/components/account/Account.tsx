@@ -4,6 +4,7 @@ import { PasswordForgetForm } from '../passwordForget';
 import { PasswordChangeForm } from '../passwordChange';
 
 import { AuthContext, withAuthorization } from '../session';
+import LoginManagement from './LoginManagement';
 
 const Account: React.FC = () => {
   const { authUser } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const Account: React.FC = () => {
       <h1>Account: {authUser?.email}</h1>
       <PasswordForgetForm />
       <PasswordChangeForm />
+      <LoginManagement authUser={authUser} />
     </div>
   );
 };

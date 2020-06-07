@@ -37,6 +37,10 @@ const SignUpForm: React.FC = () => {
         history.push(ROUTES.HOME);
       })
       .catch((error) => {
+        if (error.code === MESSAGES.EMAIL_ALREADY_IN_USE.CODE) {
+          error.message = MESSAGES.EMAIL_ALREADY_IN_USE.MESSAGE;
+        }
+
         setState({ ...state, error });
       });
   };

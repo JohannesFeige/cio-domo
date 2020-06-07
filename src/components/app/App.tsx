@@ -18,11 +18,18 @@ const App: React.FC = () => {
   const firebase = useContext(FirebaseContext);
   const authentication = useContext(AuthContext);
   useEffect(() => {
-    const listener = firebase?.onAuthStateChange((authUser) => {
+    if (firebase?.auth.currentUser) {
+      console.log('current user on app start', firebase.auth.currentUser);
+      authentication.setAuthStatus(firebase.auth.currentUser);
+    }
+
+    const listener = firebase?.auth.onAuthStateChanged((authUser) => {
       authUser ? authentication.setAuthStatus(authUser) : authentication.setUnauthStatus();
     });
     return () => listener?.();
-  });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Router>

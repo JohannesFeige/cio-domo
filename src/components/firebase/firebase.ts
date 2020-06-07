@@ -17,23 +17,16 @@ const REFS = {
 };
 
 class Firebase {
-  private auth: firebase.auth.Auth;
-  private db: firebase.database.Database;
-  private googleProvider: firebase.auth.GoogleAuthProvider;
+  auth: firebase.auth.Auth;
+  googleProvider: firebase.auth.GoogleAuthProvider;
 
-  onAuthStateChange: (
-    nextOrObserver: firebase.Observer<any> | ((a: firebase.User | null) => any),
-    error?: (a: firebase.auth.Error) => any,
-    completed?: firebase.Unsubscribe
-  ) => firebase.Unsubscribe;
+  private db: firebase.database.Database;
 
   constructor() {
     firebase.initializeApp(config);
 
     this.auth = firebase.auth();
     this.db = firebase.database();
-
-    this.onAuthStateChange = this.auth.onAuthStateChanged.bind(this.auth);
 
     this.googleProvider = new firebase.auth.GoogleAuthProvider();
   }
@@ -50,6 +43,8 @@ class Firebase {
   doPasswordReset = (email: string) => this.auth.sendPasswordResetEmail(email);
 
   doPasswordUpdate = (password: string) => this.auth.currentUser?.updatePassword(password);
+
+  getEmailCredential = (email: string, password: string) => firebase.auth.EmailAuthProvider.credential(email, password);
 
   // *** User API ***
 

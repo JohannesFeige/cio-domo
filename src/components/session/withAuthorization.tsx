@@ -13,7 +13,7 @@ const withAuthorization = (condition: (authUser: firebase.User | null) => boolea
     const { authUser } = useContext(AuthContext);
 
     useEffect(() => {
-      const listener = firebase?.onAuthStateChange((authUser) => {
+      const listener = firebase?.auth.onAuthStateChanged((authUser) => {
         if (!condition(authUser)) {
           history.push(ROUTES.SIGN_IN);
         }
@@ -21,7 +21,9 @@ const withAuthorization = (condition: (authUser: firebase.User | null) => boolea
       return () => {
         listener?.();
       };
-    });
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return condition(authUser) ? <WrappedComponent {...props} /> : null;
   };

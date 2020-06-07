@@ -20,6 +20,7 @@ const Admin: React.FC = () => {
     return () => {
       firebase?.users().off();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
