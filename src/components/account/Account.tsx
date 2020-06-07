@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
 import { PasswordForgetForm } from '../passwordForget';
-import PasswordChangeForm from '../passwordChange';
+import { PasswordChangeForm } from '../passwordChange';
 
-import AuthContext, { withAuthorization } from '../session';
+import { AuthContext, withAuthorization } from '../session';
 
 const Account: React.FC = () => {
   const { authUser } = useContext(AuthContext);

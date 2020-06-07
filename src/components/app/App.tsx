@@ -1,18 +1,18 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Navigation from '../navigation';
-import Landing from '../landing';
-import SignUpPage from '../signUp';
-import SignInPage from '../signIn';
-import PasswordForgetPage from '../passwordForget';
-import Home from '../home';
-import Account from '../account';
-import Admin from '../admin';
+import { Navigation } from '../navigation';
+import { Landing } from '../landing';
+import { SignUpPage } from '../signUp';
+import { SignInPage } from '../signIn';
+import { PasswordForgetPage } from '../passwordForget';
+import { Home } from '../home';
+import { Account } from '../account';
+import { Admin } from '../admin';
 
 import * as ROUTES from '../../constants/routes';
 import { FirebaseContext } from '../firebase';
-import AuthContext from '../session';
+import { AuthContext } from '../session';
 
 const App: React.FC = () => {
   const firebase = useContext(FirebaseContext);

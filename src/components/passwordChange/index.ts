@@ -1,3 +1,3 @@
 import PasswordChangeForm from './PasswordChangeForm';
 
-export default PasswordChangeForm;
+export { PasswordChangeForm };

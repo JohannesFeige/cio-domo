@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import SignOutButton from '../signOut';
 
 import * as ROUTES from '../../constants/routes';
-import AuthContext from '../session';
+import { AuthContext } from '../session';
 
 const Navigation: React.FC = () => {
   const { authUser } = useContext(AuthContext);
