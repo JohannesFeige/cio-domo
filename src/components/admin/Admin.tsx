@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext } from '../firebase';
 import { User } from '../firebase/models';
+import { withAuthorization } from '../session';
 
 const Admin: React.FC = () => {
   const [state, setState] = useState({ loading: false, users: [] as User[] });
@@ -52,4 +53,6 @@ const UserList: React.FC<{ users: User[] }> = ({ users }) => (
   </ul>
 );
 
-export default Admin;
+const condition = (authUser: firebase.User | null) => !!authUser;
+
+export default withAuthorization(condition)(Admin);
