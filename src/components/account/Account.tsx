@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
 import { PasswordForgetForm } from '../passwordForget';
 import PasswordChangeForm from '../passwordChange';
 
-const Account: React.FC = () => (
-  <div>
-    <h1>Account</h1>
-    <PasswordForgetForm />
-    <PasswordChangeForm />
-  </div>
-);
+import AuthContext, { withAuthorization } from '../session';
 
-export default Account;
+const Account: React.FC = () => {
+  const { authUser } = useContext(AuthContext);
+  return (
+    <div>
+      <h1>Account: {authUser?.email}</h1>
+      <PasswordForgetForm />
+      <PasswordChangeForm />
+    </div>
+  );
+};
+
+const condition = (authUser: firebase.User | null) => !!authUser;
+
+export default withAuthorization(condition)(Account);
