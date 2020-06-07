@@ -19,6 +19,7 @@ const REFS = {
 class Firebase {
   private auth: firebase.auth.Auth;
   private db: firebase.database.Database;
+  private googleProvider: firebase.auth.GoogleAuthProvider;
 
   onAuthStateChange: (
     nextOrObserver: firebase.Observer<any> | ((a: firebase.User | null) => any),
@@ -33,12 +34,16 @@ class Firebase {
     this.db = firebase.database();
 
     this.onAuthStateChange = this.auth.onAuthStateChanged.bind(this.auth);
+
+    this.googleProvider = new firebase.auth.GoogleAuthProvider();
   }
 
   // *** Auth API ***
   doCreateUserWithEmailAndPassword = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email, password);
 
   doSignInWithEmailAndPassword = (email: string, password: string) => this.auth.signInWithEmailAndPassword(email, password);
+
+  doSignInwithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
 
   doSignOut = () => this.auth.signOut();
 

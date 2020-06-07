@@ -24,6 +24,7 @@ const useAuthHandler = () => {
     if (authUser === null) {
       return;
     }
+
     localStorage.removeItem(LOCAL_STORAGE_AUTH_USER);
     setAuthUser(null);
   };
