@@ -19,8 +19,6 @@ const SignUpForm: React.FC = () => {
   const history = useHistory();
   const firebase = useContext(FirebaseContext);
 
-  console.log('SignUp');
-
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -33,7 +31,8 @@ const SignUpForm: React.FC = () => {
 
     firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then((authUser) => {
+      .then((authUser) => firebase.user(authUser.user?.uid ?? '').set({ username, email }))
+      .then(() => {
         setState({ ...INITIAL_STATE });
         history.push(ROUTES.HOME);
       })
