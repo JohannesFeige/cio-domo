@@ -5,11 +5,12 @@ import { FirebaseContext } from '../firebase';
 import * as MESSAGES from '../../constants/messages';
 
 const INITIAL_STATE = {
-  email: '',
+  passwordOne: '',
+  passwordTwo: '',
   error: (null as unknown) as { message: string },
 };
 
-const PasswordForgetForm: React.FC = () => {
+const PasswordChangeForm: React.FC = () => {
   const [state, setState] = useState(INITIAL_STATE);
   const firebase = useContext(FirebaseContext);
 
@@ -21,11 +22,16 @@ const PasswordForgetForm: React.FC = () => {
       return;
     }
 
-    const { email } = state;
+    if (!firebase.doPasswordUpdate) {
+      setState({ ...state, error: { message: MESSAGES.MISSING_AUTH_USER } });
+      return;
+    }
+
+    const { passwordOne } = state;
 
     firebase
-      .doPasswordReset(email)
-      .then(() => {
+      .doPasswordUpdate(passwordOne)
+      ?.then(() => {
         setState({ ...INITIAL_STATE });
       })
       .catch((error) => {
@@ -37,12 +43,13 @@ const PasswordForgetForm: React.FC = () => {
     setState({ ...state, [event.currentTarget.name]: event.currentTarget.value });
   };
 
-  const { email, error } = state;
-  const isInvalid = email === '';
+  const { passwordOne, passwordTwo, error } = state;
+  const isInvalid = passwordOne !== passwordTwo || passwordOne === '';
 
   return (
     <form onSubmit={submitHandler}>
-      <input name="email" value={email} onChange={changeHandler} type="text" placeholder="Email Address" />
+      <input name="passwordOne" value={passwordOne} onChange={changeHandler} type="password" placeholder="New Password" />
+      <input name="passwordTwo" value={passwordTwo} onChange={changeHandler} type="password" placeholder="Confirm New Password" />
       <button disabled={isInvalid} type="submit">
         Reset My Password
       </button>
@@ -52,4 +59,4 @@ const PasswordForgetForm: React.FC = () => {
   );
 };
 
-export default PasswordForgetForm;
+export default PasswordChangeForm;
