@@ -1,5 +1,5 @@
 import React from 'react';
-import { withAuthorization } from '../session';
+import { withAuthorization, withEmailVerification } from '../session';
 
 const Home: React.FC = () => (
   <div>
@@ -10,4 +10,7 @@ const Home: React.FC = () => (
 
 const condition = (authUser: firebase.User | null) => !!authUser;
 
-export default withAuthorization(condition)(Home);
+const wrappedAuthorization = withAuthorization(condition)(Home);
+const wrapperEmailVerification = withEmailVerification(wrappedAuthorization);
+
+export default wrapperEmailVerification;

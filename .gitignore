@@ -13,6 +13,7 @@
 
 # deploy
 /.firebase
+.firebaserc
 
 # misc
 .DS_Store

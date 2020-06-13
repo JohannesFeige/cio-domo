@@ -32,6 +32,7 @@ const SignUpForm: React.FC = () => {
     firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => firebase.user(authUser.user?.uid ?? '').set({ username, email }))
+      .then(() => firebase.doSendEmailVerification())
       .then(() => {
         setState({ ...INITIAL_STATE });
         history.push(ROUTES.HOME);

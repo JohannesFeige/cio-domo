@@ -12,10 +12,6 @@ const useAuthHandler = () => {
   const [authUser, setAuthUser] = useState<firebase.User | null>(getLocalStorageAuthUser());
 
   const setAuthStatus = (user: firebase.User) => {
-    if (authUser && authUser.uid === user.uid) {
-      return;
-    }
-
     localStorage.setItem(LOCAL_STORAGE_AUTH_USER, JSON.stringify(user));
     setAuthUser(user);
   };
