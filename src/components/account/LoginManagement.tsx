@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FirebaseContext } from '../firebase';
+import { User } from '../firebase/models';
 
 type SignInMethod = {
   id: 'password' | 'google.com';
@@ -9,7 +10,7 @@ type SignInMethod = {
 const SIGN_IN_METHODS: SignInMethod[] = [{ id: 'password' }, { id: 'google.com', provider: 'googleProvider' }];
 
 type LoginManagementProps = {
-  authUser: firebase.User | null;
+  authUser: User | null;
 };
 
 const LoginManagement: React.FC<LoginManagementProps> = (props) => {

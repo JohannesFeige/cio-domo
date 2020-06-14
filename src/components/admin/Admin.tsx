@@ -1,59 +1,27 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { FirebaseContext } from '../firebase';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+
 import { User } from '../firebase/models';
 import { withAuthorization } from '../session';
 
+import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
+import { UserItem, UserList } from '.';
+
 const Admin: React.FC = () => {
-  const [state, setState] = useState({ loading: false, users: [] as User[] });
-  const firebase = useContext(FirebaseContext);
-
-  useEffect(() => {
-    setState({ ...state, loading: true });
-    firebase?.users().on('value', (snapshot) => {
-      const usersObject = snapshot.val();
-
-      const usersList = Object.keys(usersObject).map((key) => ({ ...usersObject[key], uid: key }));
-
-      setState((prevState) => ({ ...prevState, users: usersList, loading: false }));
-    });
-
-    return () => {
-      firebase?.users().off();
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const { users, loading } = state;
-
   return (
     <div>
-      <h1> Admin</h1>
+      <h1>Admin</h1>
+      <p>The Admin Page is accessible by evry signed in admin user.</p>
 
-      {loading && <div>Loading...</div>}
-      <UserList users={users} />
+      <Switch>
+        <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem} />
+        <Route exact path={ROUTES.ADMIN} component={UserList} />
+      </Switch>
     </div>
   );
 };
 
-const UserList: React.FC<{ users: User[] }> = ({ users }) => (
-  <ul>
-    {users.map((user) => (
-      <li key={user.uid}>
-        <span>
-          <strong>ID:</strong> {user.uid}
-        </span>
-        <span>
-          <strong>E-Mail:</strong> {user.email}
-        </span>
-        <span>
-          <strong>Username:</strong> {user.username}
-        </span>
-      </li>
-    ))}
-  </ul>
-);
-
-const condition = (authUser: firebase.User | null) => !!authUser;
+const condition = (user: User | null) => !!user && !!user.roles[ROLES.ADMIN];
 
 export default withAuthorization(condition)(Admin);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withAuthorization, withEmailVerification } from '../session';
+import { User } from '../firebase/models';
 
 const Home: React.FC = () => (
   <div>
@@ -8,7 +9,7 @@ const Home: React.FC = () => (
   </div>
 );
 
-const condition = (authUser: firebase.User | null) => !!authUser;
+const condition = (user: User | null) => !!user;
 
 const wrappedAuthorization = withAuthorization(condition)(Home);
 const wrapperEmailVerification = withEmailVerification(wrappedAuthorization);

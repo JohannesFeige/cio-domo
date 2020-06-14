@@ -18,14 +18,16 @@ const App: React.FC = () => {
   const firebase = useContext(FirebaseContext);
   const authentication = useContext(AuthContext);
   useEffect(() => {
-    if (firebase?.auth.currentUser) {
-      console.log('current user on app start', firebase.auth.currentUser);
-      authentication.setAuthStatus(firebase.auth.currentUser);
-    }
+    // if (firebase?.auth.currentUser) {
+    //   authentication.setAuthStatus(firebase.auth.currentUser);
+    // }
 
-    const listener = firebase?.auth.onAuthStateChanged((authUser) => {
-      authUser ? authentication.setAuthStatus(authUser) : authentication.setUnauthStatus();
-    });
+    const listener = firebase?.onAuthListener(
+      (user) => {
+        authentication.setAuthStatus(user);
+      },
+      () => authentication.setUnauthStatus()
+    );
     return () => listener?.();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,12 +39,12 @@ const App: React.FC = () => {
         <Navigation />
         <hr />
         <Route exact path={ROUTES.LANDING} component={Landing} />
-        <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-        <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-        <Route exact path={ROUTES.HOME} component={Home} />
-        <Route exact path={ROUTES.ACCOUNT} component={Account} />
-        <Route exact path={ROUTES.ADMIN} component={Admin} />
+        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+        <Route path={ROUTES.HOME} component={Home} />
+        <Route path={ROUTES.ACCOUNT} component={Account} />
+        <Route path={ROUTES.ADMIN} component={Admin} />
       </div>
     </Router>
   );

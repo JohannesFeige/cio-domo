@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from './';
 import { FirebaseContext } from '../firebase';
+import { User } from '../firebase/models';
 
 const withEmailVerification = <P extends {}>(WrappedComponent: React.FC<P>) => {
-  const needsEmailVerification = (authUser: firebase.User | null) =>
+  const needsEmailVerification = (authUser: User | null) =>
     authUser && !authUser.emailVerified && authUser.providerData.map((provider) => provider?.providerId).includes('password');
 
   return (props: P) => {

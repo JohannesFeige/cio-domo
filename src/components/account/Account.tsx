@@ -5,6 +5,7 @@ import { PasswordChangeForm } from '../passwordChange';
 
 import { AuthContext, withAuthorization } from '../session';
 import LoginManagement from './LoginManagement';
+import { User } from '../firebase/models';
 
 const Account: React.FC = () => {
   const { authUser } = useContext(AuthContext);
@@ -18,6 +19,6 @@ const Account: React.FC = () => {
   );
 };
 
-const condition = (authUser: firebase.User | null) => !!authUser;
+const condition = (user: User | null) => !!user;
 
 export default withAuthorization(condition)(Account);

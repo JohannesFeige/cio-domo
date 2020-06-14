@@ -5,19 +5,23 @@ import { FirebaseContext } from '../firebase';
 import { AuthContext } from '.';
 
 import * as ROUTES from '../../constants/routes';
+import { User } from '../firebase/models';
 
-const withAuthorization = (condition: (authUser: firebase.User | null) => boolean) => <P extends {}>(WrappedComponent: React.FC<P>) => {
+const withAuthorization = (condition: (user: User | null) => boolean) => <P extends {}>(WrappedComponent: React.FC<P>) => {
   return (props: P) => {
     const history = useHistory();
     const firebase = useContext(FirebaseContext);
     const { authUser } = useContext(AuthContext);
 
     useEffect(() => {
-      const listener = firebase?.auth.onAuthStateChanged((authUser) => {
-        if (!condition(authUser)) {
-          history.push(ROUTES.SIGN_IN);
-        }
-      });
+      const listener = firebase?.onAuthListener(
+        (user) => {
+          if (!condition(user)) {
+            history.push(ROUTES.SIGN_IN);
+          }
+        },
+        () => history.push(ROUTES.SIGN_IN)
+      );
       return () => {
         listener?.();
       };
