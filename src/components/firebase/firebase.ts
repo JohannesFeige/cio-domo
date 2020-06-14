@@ -20,10 +20,11 @@ const REFS = {
 };
 
 class Firebase {
-  auth: firebase.auth.Auth;
-  googleProvider: firebase.auth.GoogleAuthProvider;
-
+  private auth: firebase.auth.Auth;
   private db: firebase.database.Database;
+
+  googleProvider: firebase.auth.GoogleAuthProvider;
+  currentUser: firebase.User | null;
 
   constructor() {
     firebase.initializeApp(config);
@@ -32,6 +33,7 @@ class Firebase {
     this.db = firebase.database();
 
     this.googleProvider = new firebase.auth.GoogleAuthProvider();
+    this.currentUser = firebase.auth().currentUser;
   }
 
   // *** Auth API ***
@@ -53,6 +55,8 @@ class Firebase {
   doPasswordUpdate = (password: string) => this.auth.currentUser?.updatePassword(password);
 
   getEmailCredential = (email: string, password: string) => firebase.auth.EmailAuthProvider.credential(email, password);
+
+  fetchSignInMethodsForEmail = (email: string) => this.auth.fetchSignInMethodsForEmail(email);
 
   // *** User API ***
   user = (uid: string) => this.db.ref(`${REFS.USERS}/${uid}`);

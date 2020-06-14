@@ -30,8 +30,8 @@ const LoginManagement: React.FC<LoginManagementProps> = (props) => {
       return;
     }
 
-    firebase?.auth
-      .fetchSignInMethodsForEmail(props.authUser.email)
+    firebase
+      ?.fetchSignInMethodsForEmail(props.authUser.email)
       .then((activeSignInMethods) => {
         setState({ ...state, activeSignInMethods, error: null });
       })
@@ -45,7 +45,7 @@ const LoginManagement: React.FC<LoginManagementProps> = (props) => {
 
     const credential = firebase.getEmailCredential(props.authUser.email, password);
 
-    firebase.auth.currentUser
+    firebase.currentUser
       ?.linkWithCredential(credential)
       .then(fetchSignInMethods)
       .catch((error) => setState({ ...state, error }));
@@ -71,14 +71,14 @@ const LoginManagement: React.FC<LoginManagementProps> = (props) => {
       return;
     }
 
-    firebase?.auth.currentUser
+    firebase?.currentUser
       ?.linkWithPopup(authProvider)
       .then(fetchSignInMethods)
       .catch((error) => setState({ ...state, error }));
   };
 
   const unlinkClickHandler = (providerId: string) => {
-    firebase?.auth.currentUser
+    firebase?.currentUser
       ?.unlink(providerId)
       .then(fetchSignInMethods)
       .catch((error) => setState({ ...state, error }));
