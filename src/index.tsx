@@ -8,6 +8,8 @@ import App from './components/app/App';
 import { FirebaseProvider } from './components/firebase';
 import { AuthProvider } from './components/session';
 
+import 'fontsource-roboto/';
+
 ReactDOM.render(
   <FirebaseProvider>
     <AuthProvider>

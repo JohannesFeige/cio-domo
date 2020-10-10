@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Container, makeStyles, CssBaseline } from '@material-ui/core';
 
 import { Navigation } from '../navigation';
 import { Landing } from '../landing';
@@ -18,10 +19,6 @@ const App: React.FC = () => {
   const firebase = useContext(FirebaseContext);
   const authentication = useContext(AuthContext);
   useEffect(() => {
-    // if (firebase?.auth.currentUser) {
-    //   authentication.setAuthStatus(firebase.auth.currentUser);
-    // }
-
     const listener = firebase?.onAuthListener(
       (user) => {
         authentication.setAuthStatus(user);
@@ -33,11 +30,21 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const classes = makeStyles((theme) => ({
+    rootContainer: {
+      paddingLeft: 0,
+      paddingRight: 0,
+      backgroundColor: theme.palette.primary.main,
+    },
+  }))();
+
   return (
     <Router>
-      <div>
+      <CssBaseline />
+      <Container maxWidth={false} className={classes.rootContainer}>
         <Navigation />
-        <hr />
+      </Container>
+      <Container>
         <Route exact path={ROUTES.LANDING} component={Landing} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -45,7 +52,7 @@ const App: React.FC = () => {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.ACCOUNT} component={Account} />
         <Route path={ROUTES.ADMIN} component={Admin} />
-      </div>
+      </Container>
     </Router>
   );
 };
