@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container, makeStyles, CssBaseline } from '@material-ui/core';
+import { Container, CssBaseline } from '@material-ui/core';
 
-import { Navigation } from '../navigation';
+import { MenuAppBar } from '../menuAppBar';
 import { Landing } from '../landing';
 import { SignUpPage } from '../signUp';
 import { SignInPage } from '../signIn';
@@ -30,20 +30,10 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const classes = makeStyles((theme) => ({
-    rootContainer: {
-      paddingLeft: 0,
-      paddingRight: 0,
-      backgroundColor: theme.palette.primary.main,
-    },
-  }))();
-
   return (
     <Router>
       <CssBaseline />
-      <Container maxWidth={false} className={classes.rootContainer}>
-        <Navigation />
-      </Container>
+      <MenuAppBar />
       <Container>
         <Route exact path={ROUTES.LANDING} component={Landing} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />

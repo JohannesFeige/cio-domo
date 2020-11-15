@@ -6,7 +6,7 @@ import { FirebaseContext } from '../firebase';
 const UserItem: React.FC = () => {
   const match = useRouteMatch<{ id: string }>();
   const location = useLocation<{ user: User }>();
-  const [state, setState] = useState({ loading: false, user: null as User | null, ...location.state });
+  const [state, setState] = useState({ loading: false, ...location.state });
   const firebase = useContext(FirebaseContext);
 
   useEffect(() => {
