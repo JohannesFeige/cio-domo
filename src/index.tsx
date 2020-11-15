@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// TODO: remove this if material-ui v5 is released
+import { ThemeProvider, unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 
@@ -10,11 +13,15 @@ import { AuthProvider } from './components/session';
 
 import 'fontsource-roboto/';
 
+const theme = unstable_createMuiStrictModeTheme();
+
 ReactDOM.render(
   <FirebaseProvider>
     <AuthProvider>
       <React.StrictMode>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </React.StrictMode>
     </AuthProvider>
   </FirebaseProvider>,

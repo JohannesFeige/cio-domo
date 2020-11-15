@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
+import { MenuItem } from '@material-ui/core';
 
 import { FirebaseContext } from '../firebase';
 
 import * as MESSAGES from '../../constants/messages';
 
-const SignOutButton: React.FC = () => {
+const SignOutMenuItem: React.FC = () => {
   const firebase = useContext(FirebaseContext);
 
-  const clickHandler = () => {
+  const handleClick = () => {
     if (!firebase) {
       console.error(MESSAGES.MISSING_FIREBASE_CONTEXT);
       return;
@@ -16,11 +17,7 @@ const SignOutButton: React.FC = () => {
     firebase.doSignOut();
   };
 
-  return (
-    <button type="button" onClick={clickHandler}>
-      Sign Out
-    </button>
-  );
+  return <MenuItem onClick={handleClick}>Sign Out</MenuItem>;
 };
 
-export default SignOutButton;
+export default SignOutMenuItem;

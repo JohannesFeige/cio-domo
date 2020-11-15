@@ -1,3 +1,3 @@
-import SignOutButton from './SignOutButton';
+import SignOutMenuItem from './SignOutMenuItem';
 
-export default SignOutButton;
+export default SignOutMenuItem;

@@ -5,7 +5,7 @@ import { AppBar, Button, IconButton, Toolbar, makeStyles, Menu, MenuItem } from 
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import SignOutButton from '../signOut';
+import SignOutMenuItem from '../signOut';
 
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
@@ -60,17 +60,20 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
       <div style={{ flex: 1 }}>
         <NavigationItem to={ROUTES.LANDING} text="Landing" />
         <NavigationItem to={ROUTES.HOME} text="Home" />
-        <NavigationItem to={ROUTES.ACCOUNT} text="Account" />
-
-        {!!user.roles[ROLES.ADMIN] && <NavigationItem to={ROUTES.ADMIN} text="Admin" />}
       </div>
-      <SignOutButton />
       <IconButton color="inherit" onClick={handleAppBarMenuOpen} aria-controls="menu-appbar">
         <MoreVertIcon />
       </IconButton>
       <Menu id="menu-appbar" anchorEl={appBarMenuEl} open={isAppBarMenuOpen} onClose={handleAppBarMenuClose} keepMounted>
-        <MenuItem onClick={handleAppBarMenuClose}>First</MenuItem>
-        <MenuItem onClick={handleAppBarMenuClose}>Second</MenuItem>
+        <MenuItem onClick={handleAppBarMenuClose} component={Link} to={ROUTES.ACCOUNT}>
+          Account
+        </MenuItem>
+        {!!user.roles[ROLES.ADMIN] && (
+          <MenuItem onClick={handleAppBarMenuClose} component={Link} to={ROUTES.ADMIN}>
+            Admin
+          </MenuItem>
+        )}
+        <SignOutMenuItem />
       </Menu>
     </React.Fragment>
   );
