@@ -7,6 +7,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import SignOutMenuItem from '../signOut';
 
+import { logo } from '../../assets';
+
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { AuthContext } from '../session';
@@ -15,6 +17,14 @@ import { User } from '../firebase/models';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     boxShadow: 'none',
+  },
+  logo: {
+    padding: '0px 0',
+    height: '48px',
+  },
+  mainNavigationWrapper: {
+    flex: 1,
+    display: 'flex',
   },
 }));
 
@@ -29,13 +39,15 @@ const MenuAppBar: React.FC = () => {
   );
 };
 
-type NavigationItemProps = {
-  to: string;
-  text: string;
-};
-const NavigationItem: React.FC<NavigationItemProps> = ({ to, text }) => (
+const NavigationItem: React.FC<{ to: string; text: string }> = ({ to, text }) => (
   <Button color="inherit" disableElevation component={Link} to={to}>
     {text}
+  </Button>
+);
+
+const NavigationImageItem: React.FC<{ to: string; src: string; imageClass: string; alt: string }> = ({ to, src, imageClass, alt }) => (
+  <Button color="inherit" disableElevation component={Link} to={to}>
+    <img className={imageClass} src={src} alt={alt} />
   </Button>
 );
 
@@ -55,10 +67,12 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
     setAppBarMenuEl(null);
   };
 
+  const classes = useStyles();
+
   return (
     <React.Fragment>
-      <div style={{ flex: 1 }}>
-        <NavigationItem to={ROUTES.LANDING} text="Landing" />
+      <div className={classes.mainNavigationWrapper}>
+        <NavigationImageItem to={ROUTES.LANDING} imageClass={classes.logo} src={logo} alt="Logo" />
         <NavigationItem to={ROUTES.HOME} text="Home" />
       </div>
       <IconButton color="inherit" onClick={handleAppBarMenuOpen} aria-controls="menu-appbar">
@@ -79,11 +93,14 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
   );
 };
 
-const MenuAppBarNonAuth: React.FC = () => (
-  <div style={{ flex: 1 }}>
-    <NavigationItem to={ROUTES.LANDING} text="Landing" />
-    <NavigationItem to={ROUTES.SIGN_IN} text="Sign In" />
-  </div>
-);
+const MenuAppBarNonAuth: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <div style={{ flex: 1 }}>
+      <NavigationImageItem to={ROUTES.LANDING} imageClass={classes.logo} src={logo} alt="Logo" />
+      <NavigationItem to={ROUTES.SIGN_IN} text="Sign In" />
+    </div>
+  );
+};
 
 export default MenuAppBar;
