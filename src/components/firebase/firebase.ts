@@ -17,6 +17,7 @@ const config = {
 const REFS = {
   USERS: 'users',
   AUTHENTICATIONS: 'authentications',
+  GROCERIES: 'groceries',
 };
 
 class Firebase {
@@ -99,6 +100,10 @@ class Firebase {
         fallback();
       }
     });
+
+  /// *** GroceryList API ***
+
+  groceryList = () => this.db.ref(REFS.GROCERIES);
 }
 
 export default Firebase;

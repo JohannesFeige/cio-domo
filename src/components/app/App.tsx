@@ -14,6 +14,7 @@ import { Admin } from '../admin';
 import * as ROUTES from '../../constants/routes';
 import { FirebaseContext } from '../firebase';
 import { AuthContext } from '../session';
+import { Food } from '../food';
 
 const App: React.FC = () => {
   const firebase = useContext(FirebaseContext);
@@ -42,6 +43,7 @@ const App: React.FC = () => {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.ACCOUNT} component={Account} />
         <Route path={ROUTES.ADMIN} component={Admin} />
+        <Route path={ROUTES.FOOD} component={Food} />
       </Container>
     </Router>
   );

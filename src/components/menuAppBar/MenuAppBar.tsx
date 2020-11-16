@@ -2,8 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBar, Button, IconButton, Toolbar, makeStyles, Menu, MenuItem } from '@material-ui/core';
-
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { MoreVert } from '@material-ui/icons';
 
 import SignOutMenuItem from '../signOut';
 
@@ -19,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none',
   },
   logo: {
-    padding: '0px 0',
     height: '48px',
   },
   mainNavigationWrapper: {
@@ -34,13 +32,13 @@ const MenuAppBar: React.FC = () => {
 
   return (
     <AppBar position="static" className={classes.appBar}>
-      <Toolbar>{authUser ? <MenuAppBarAuth user={authUser} /> : <MenuAppBarNonAuth />}</Toolbar>
+      <Toolbar>{authUser ? <MenuAppBarAuth user={authUser} classes={classes} /> : <MenuAppBarNonAuth classes={classes} />}</Toolbar>
     </AppBar>
   );
 };
 
 const NavigationItem: React.FC<{ to: string; text: string }> = ({ to, text }) => (
-  <Button color="inherit" disableElevation component={Link} to={to}>
+  <Button color="inherit" disableElevation component={Link} to={to} size="large">
     {text}
   </Button>
 );
@@ -51,10 +49,7 @@ const NavigationImageItem: React.FC<{ to: string; src: string; imageClass: strin
   </Button>
 );
 
-type MenuAppBarAuthPros = {
-  user: User;
-};
-const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
+const MenuAppBarAuth: React.FC<{ user: User; classes: Record<'mainNavigationWrapper' | 'logo', string> }> = ({ user, classes }) => {
   const [appBarMenuEl, setAppBarMenuEl] = useState<null | HTMLElement>(null);
 
   const isAppBarMenuOpen = Boolean(appBarMenuEl);
@@ -67,8 +62,6 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
     setAppBarMenuEl(null);
   };
 
-  const classes = useStyles();
-
   return (
     <React.Fragment>
       <div className={classes.mainNavigationWrapper}>
@@ -76,7 +69,7 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
         <NavigationItem to={ROUTES.HOME} text="Home" />
       </div>
       <IconButton color="inherit" onClick={handleAppBarMenuOpen} aria-controls="menu-appbar">
-        <MoreVertIcon />
+        <MoreVert />
       </IconButton>
       <Menu id="menu-appbar" anchorEl={appBarMenuEl} open={isAppBarMenuOpen} onClose={handleAppBarMenuClose} keepMounted>
         <MenuItem onClick={handleAppBarMenuClose} component={Link} to={ROUTES.ACCOUNT}>
@@ -93,8 +86,7 @@ const MenuAppBarAuth: React.FC<MenuAppBarAuthPros> = ({ user }) => {
   );
 };
 
-const MenuAppBarNonAuth: React.FC = () => {
-  const classes = useStyles();
+const MenuAppBarNonAuth: React.FC<{ classes: Record<'logo', string> }> = ({ classes }) => {
   return (
     <div style={{ flex: 1 }}>
       <NavigationImageItem to={ROUTES.LANDING} imageClass={classes.logo} src={logo} alt="Logo" />
