@@ -38,7 +38,7 @@ const MenuAppBar: React.FC = () => {
 };
 
 const NavigationItem: React.FC<{ to: string; text: string }> = ({ to, text }) => (
-  <Button color="inherit" disableElevation component={Link} to={to} size="large">
+  <Button color="inherit" disableElevation component={Link} to={to} size="large" title={text}>
     {text}
   </Button>
 );
