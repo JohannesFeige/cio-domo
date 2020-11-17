@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container, CssBaseline } from '@material-ui/core';
+import { Container, CssBaseline, useMediaQuery, Theme } from '@material-ui/core';
 
 import { MenuAppBar } from '../menuAppBar';
 import { Landing } from '../landing';
@@ -31,11 +31,16 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isSmall = useMediaQuery<Theme>((theme) => {
+    (window as any)['theme'] = theme;
+    return theme.breakpoints.down('xs');
+  });
+
   return (
     <Router>
       <CssBaseline />
       <MenuAppBar />
-      <Container>
+      <Container disableGutters={isSmall}>
         <Route exact path={ROUTES.LANDING} component={Landing} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />

@@ -2,12 +2,28 @@ import React, { useState, useContext } from 'react';
 import { FirebaseContext } from '../../firebase';
 import { Grocery } from '../../firebase/models';
 
-import { TextField } from '@material-ui/core';
+import { IconButton, InputBase, makeStyles, Paper } from '@material-ui/core';
+import { CheckBox } from '@material-ui/icons';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: '4px 8px',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    flex: 1,
+  },
+}));
 
 const NewGrocery: React.FC = () => {
   const [grocery, setGrocery] = useState(null as Partial<Grocery> | null);
   const [rawValue, setRawValue] = useState('');
   const firebase = useContext(FirebaseContext);
+  const classes = useStyles();
 
   const handleAddGrocerySubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -56,10 +72,20 @@ const NewGrocery: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleAddGrocerySubmit} noValidate>
-      <TextField id="new-grocery" label="Grocery : Amount" fullWidth={true} onChange={handleNewGroceryChange} value={rawValue} />
-      <button type="submit">Add</button>
-    </form>
+    <Paper className={classes.root} component="form" onSubmit={handleAddGrocerySubmit} elevation={1}>
+      <InputBase
+        className={classes.input}
+        placeholder="Grocery : Amount"
+        fullWidth={true}
+        onChange={handleNewGroceryChange}
+        value={rawValue}
+      />
+      {rawValue && (
+        <IconButton type="submit" color="primary">
+          <CheckBox />
+        </IconButton>
+      )}
+    </Paper>
   );
 };
 
