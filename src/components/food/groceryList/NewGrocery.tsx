@@ -26,9 +26,26 @@ const NewGrocery: React.FC = () => {
     setRawValue(value);
     const [name, ...amounts] = value.split(':');
 
+    const getDummyCategories = (name: string) => {
+      if (['Apfel', 'Birne', 'Melone'].indexOf(name) > -1) {
+        return 'green';
+      }
+
+      if (['Mehl', 'Zucker'].indexOf(name) > -1) {
+        return 'orange';
+      }
+
+      if (['Marmelade'].indexOf(name) > -1) {
+        return 'cyan';
+      }
+
+      return 'undefined';
+    };
+
     const newGrocery: Partial<Grocery> = {
       name,
       amount: amounts.length ? amounts.map((amount) => amount.trim()).join('') : undefined,
+      category: getDummyCategories(name),
     };
 
     if (newGrocery.amount === undefined) {
