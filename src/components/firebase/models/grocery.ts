@@ -1,8 +1,10 @@
+import Categories from '../../../constants/groceryCategories';
+
 type Grocery = {
   uid: string;
   name: string;
   amount: string;
-  category: 'cyan' | 'orange' | 'green' | 'undefined';
+  category: keyof typeof Categories | 'undefined';
 };
 
 export default Grocery;

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext } from '../../firebase';
 import { Grocery } from '../../firebase/models';
+import GROCERY_CATEGORIES from '../../../constants/groceryCategories';
 
 import { IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
@@ -13,19 +14,30 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     left: 0,
   },
-
   categoryCyan: {
-    backgroundColor: '#26B0C7',
+    backgroundColor: `${GROCERY_CATEGORIES.cyan}`,
   },
-
   categoryGreen: {
-    backgroundColor: '#75B35A',
+    backgroundColor: `${GROCERY_CATEGORIES.green}`,
   },
-
+  categoryPink: {
+    backgroundColor: `${GROCERY_CATEGORIES.pink}`,
+  },
   categoryOrange: {
-    backgroundColor: '#E57542',
+    backgroundColor: `${GROCERY_CATEGORIES.orange}`,
   },
-
+  categoryRed: {
+    backgroundColor: `${GROCERY_CATEGORIES.red}`,
+  },
+  categoryViolet: {
+    backgroundColor: `${GROCERY_CATEGORIES.violet}`,
+  },
+  categoryBlue: {
+    backgroundColor: `${GROCERY_CATEGORIES.blue}`,
+  },
+  categoryGray: {
+    backgroundColor: `${GROCERY_CATEGORIES.gray}`,
+  },
   listItemText: {
     display: 'flex',
     alignItems: 'center',
@@ -53,8 +65,6 @@ const GroceryList: React.FC = () => {
               } as Grocery)
           )
         : [];
-
-      console.log({ groceryList });
 
       const groupGroceries = groceryList.reduce((acc, value) => {
         if (!acc[value.category]) {
@@ -94,8 +104,18 @@ const GroceryList: React.FC = () => {
           return classes.categoryCyan;
         case 'green':
           return classes.categoryGreen;
+        case 'pink':
+          return classes.categoryPink;
         case 'orange':
           return classes.categoryOrange;
+        case 'red':
+          return classes.categoryRed;
+        case 'violet':
+          return classes.categoryViolet;
+        case 'blue':
+          return classes.categoryBlue;
+        case 'gray':
+          return classes.categoryGray;
         default:
           return '';
       }
