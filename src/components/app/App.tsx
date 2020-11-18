@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container, CssBaseline, useMediaQuery, Theme } from '@material-ui/core';
+import { Container, CssBaseline, useMediaQuery, Theme, ThemeProvider } from '@material-ui/core';
+import { createXTheme } from '../../shared/theme';
 
 import { MenuAppBar } from '../menuAppBar';
 import { Landing } from '../landing';
@@ -32,25 +33,28 @@ const App: React.FC = () => {
   }, []);
 
   const isSmall = useMediaQuery<Theme>((theme) => {
-    (window as any)['theme'] = theme;
     return theme.breakpoints.down('xs');
   });
 
+  const xTheme = createXTheme();
+
   return (
-    <Router>
-      <CssBaseline />
-      <MenuAppBar />
-      <Container disableGutters={isSmall}>
-        <Route exact path={ROUTES.LANDING} component={Landing} />
-        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-        <Route path={ROUTES.HOME} component={Home} />
-        <Route path={ROUTES.ACCOUNT} component={Account} />
-        <Route path={ROUTES.ADMIN} component={Admin} />
-        <Route path={ROUTES.FOOD} component={Food} />
-      </Container>
-    </Router>
+    <ThemeProvider theme={xTheme}>
+      <Router>
+        <CssBaseline />
+        <MenuAppBar />
+        <Container disableGutters={isSmall}>
+          <Route exact path={ROUTES.LANDING} component={Landing} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+          <Route path={ROUTES.HOME} component={Home} />
+          <Route path={ROUTES.ACCOUNT} component={Account} />
+          <Route path={ROUTES.ADMIN} component={Admin} />
+          <Route path={ROUTES.FOOD} component={Food} />
+        </Container>
+      </Router>
+    </ThemeProvider>
   );
 };
 

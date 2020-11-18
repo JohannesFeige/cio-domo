@@ -1,43 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { XTheme } from '../../../types/material-ui';
 import { FirebaseContext } from '../../firebase';
+import { createCategoryClasses } from '../../../shared/theme';
 import { Grocery } from '../../firebase/models';
-import GROCERY_CATEGORIES from '../../../constants/groceryCategories';
 
 import { IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import NewGrocery from './NewGrocery';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: XTheme) => ({
   group: {
     width: theme.spacing(1),
     height: '100%',
     position: 'absolute',
     left: 0,
   },
-  categoryCyan: {
-    backgroundColor: `${GROCERY_CATEGORIES.cyan}`,
-  },
-  categoryGreen: {
-    backgroundColor: `${GROCERY_CATEGORIES.green}`,
-  },
-  categoryPink: {
-    backgroundColor: `${GROCERY_CATEGORIES.pink}`,
-  },
-  categoryOrange: {
-    backgroundColor: `${GROCERY_CATEGORIES.orange}`,
-  },
-  categoryRed: {
-    backgroundColor: `${GROCERY_CATEGORIES.red}`,
-  },
-  categoryViolet: {
-    backgroundColor: `${GROCERY_CATEGORIES.violet}`,
-  },
-  categoryBlue: {
-    backgroundColor: `${GROCERY_CATEGORIES.blue}`,
-  },
-  categoryGray: {
-    backgroundColor: `${GROCERY_CATEGORIES.gray}`,
-  },
+  ...createCategoryClasses(theme),
   listItemText: {
     display: 'flex',
     alignItems: 'center',
@@ -99,26 +77,9 @@ const GroceryList: React.FC = () => {
 
   const renderGroup = (group: Grocery[]) => {
     const getCategoryClass = (category: Grocery['category']) => {
-      switch (category) {
-        case 'cyan':
-          return classes.categoryCyan;
-        case 'green':
-          return classes.categoryGreen;
-        case 'pink':
-          return classes.categoryPink;
-        case 'orange':
-          return classes.categoryOrange;
-        case 'red':
-          return classes.categoryRed;
-        case 'violet':
-          return classes.categoryViolet;
-        case 'blue':
-          return classes.categoryBlue;
-        case 'gray':
-          return classes.categoryGray;
-        default:
-          return '';
-      }
+      const { [`category-${category}`]: className } = classes as Record<string, string>;
+
+      return className;
     };
 
     return group.map((grocery) => {
