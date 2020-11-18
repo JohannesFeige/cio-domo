@@ -4,11 +4,29 @@ import { Grocery } from '../../firebase/models';
 
 import NewGrocery from './NewGrocery';
 import GroceryGroup from './GroceryGroup';
-import { List } from '@material-ui/core';
+import { List, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  listWrapper: {
+    position: 'relative',
+  },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    background: '#fff',
+    opacity: 0.8,
+    top: theme.spacing(0.5),
+    left: 0,
+    zIndex: 10,
+  },
+}));
 
 const GroceryList: React.FC = () => {
   const [state, setState] = useState({ loading: false, groceries: [] as Grocery[][] });
+  const [showOverlay, setShowOverlay] = useState(false);
   const firebase = useContext(FirebaseContext);
+  const classes = useStyles();
 
   useEffect(() => {
     setState({ ...state, loading: true });
@@ -19,18 +37,18 @@ const GroceryList: React.FC = () => {
             (key) =>
               ({
                 ...groceryListObject[key],
-                category: groceryListObject[key].category == null ? 'undefined' : groceryListObject[key].category,
                 uid: key,
               } as Grocery)
           )
         : [];
 
       const groupedGroceries = groceryList.reduce((acc, value) => {
-        if (!acc[value.category]) {
-          acc[value.category] = [];
+        const category = value.category || 'undefined';
+        if (!acc[category]) {
+          acc[category] = [];
         }
 
-        acc[value.category].push(value);
+        acc[category].push(value);
 
         return acc;
       }, {} as { [index: string]: Grocery[] });
@@ -48,17 +66,24 @@ const GroceryList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handlePopupChange = (open: boolean) => {
+    setShowOverlay(open);
+  };
+
   const { loading, groceries } = state;
   return (
     <div>
       <span>Grocery List</span>
       {loading && <div>Loading...</div>}
-      <NewGrocery />
-      <List>
-        {groceries.map((groceryGroup, index) => (
-          <GroceryGroup key={index} group={groceryGroup} />
-        ))}
-      </List>
+      <NewGrocery onPopupChange={handlePopupChange} />
+      <div className={classes.listWrapper}>
+        {showOverlay && <div className={classes.overlay}></div>}
+        <List>
+          {groceries.map((groceryGroup, index) => (
+            <GroceryGroup key={index} group={groceryGroup} />
+          ))}
+        </List>
+      </div>
     </div>
   );
 };

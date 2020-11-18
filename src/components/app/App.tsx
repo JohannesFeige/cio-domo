@@ -33,6 +33,7 @@ const App: React.FC = () => {
   }, []);
 
   const isSmall = useMediaQuery<Theme>((theme) => {
+    (window as any).theme = theme;
     return theme.breakpoints.down('xs');
   });
 

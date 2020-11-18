@@ -1,11 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { FirebaseContext } from '../../firebase';
 import { Grocery } from '../../firebase/models';
 
-import { IconButton, InputBase, makeStyles, Paper } from '@material-ui/core';
-import { CheckBox } from '@material-ui/icons';
+import { IconButton, InputBase, makeStyles, Paper, Popper } from '@material-ui/core';
+import { CheckBox, CheckRounded } from '@material-ui/icons';
+import { XPalette, XTheme } from '../../../types/material-ui';
+import { createCategoryClasses } from '../../../shared/theme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: XTheme) => ({
+  ...createCategoryClasses(theme),
   root: {
     padding: '4px 8px',
     display: 'flex',
@@ -17,13 +20,39 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     flex: 1,
   },
+  popper: {
+    marginTop: theme.spacing(2),
+    zIndex: 20,
+  },
+  poppperContent: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    // background: theme.palette.grey[400],
+    maxWidth: theme.spacing(4 * 10),
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  category: {
+    margin: theme.spacing(0.5),
+    height: theme.spacing(9),
+    width: theme.spacing(9),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  check: {
+    color: '#fff',
+  },
 }));
 
-const NewGrocery: React.FC = () => {
+const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPopupChange }) => {
   const [grocery, setGrocery] = useState(null as Partial<Grocery> | null);
   const [rawValue, setRawValue] = useState('');
   const firebase = useContext(FirebaseContext);
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<keyof XPalette | null>(null);
+  const inputElement = useRef<HTMLInputElement>(null);
 
   const handleAddGrocerySubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,6 +63,8 @@ const NewGrocery: React.FC = () => {
       .then(() => {
         setGrocery(null);
         setRawValue('');
+        setSelectedCategory(null);
+        closePopup();
       });
   };
 
@@ -42,26 +73,10 @@ const NewGrocery: React.FC = () => {
     setRawValue(value);
     const [name, ...amounts] = value.split(':');
 
-    const getDummyCategories = (name: string) => {
-      if (['Apfel', 'Birne', 'Melone'].indexOf(name) > -1) {
-        return 'green';
-      }
-
-      if (['Mehl', 'Zucker'].indexOf(name) > -1) {
-        return 'orange';
-      }
-
-      if (['Marmelade'].indexOf(name) > -1) {
-        return 'cyan';
-      }
-
-      return 'undefined';
-    };
-
     const newGrocery: Partial<Grocery> = {
       name,
       amount: amounts.length ? amounts.map((amount) => amount.trim()).join('') : undefined,
-      category: getDummyCategories(name),
+      category: 'undefined',
     };
 
     if (newGrocery.amount === undefined) {
@@ -71,21 +86,87 @@ const NewGrocery: React.FC = () => {
     setGrocery(newGrocery);
   };
 
+  const closePopup = () => {
+    setAnchorEl(null);
+    onPopupChange(false);
+  };
+
+  const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    setAnchorEl(event.currentTarget);
+    onPopupChange(true);
+  };
+
+  const handleInputBlur = () => {
+    // closePopup();
+  };
+
+  const open = Boolean(anchorEl);
+
+  const categories: Record<string, { order: number }> = {
+    cyan: { order: 0 },
+    green: { order: 0 },
+    pink: { order: 0 },
+    orange: { order: 0 },
+    red: { order: 0 },
+    violet: { order: 0 },
+    blue: { order: 0 },
+    gray: { order: 0 },
+  };
+
+  const getCategoryClass = (category: keyof XPalette) => {
+    const { [`category-${category}`]: className } = classes as Record<string, string>;
+    return className;
+  };
+
+  const toggleSelectedCategory = (category: keyof XPalette) => {
+    let tempSelected: keyof XPalette | null = null;
+
+    if (selectedCategory !== category) {
+      tempSelected = category;
+    }
+
+    setSelectedCategory(tempSelected);
+    setGrocery({ ...grocery, category: tempSelected as keyof XPalette });
+
+    if (inputElement && inputElement.current) {
+      inputElement.current.focus();
+    }
+  };
+
   return (
-    <Paper className={classes.root} component="form" onSubmit={handleAddGrocerySubmit} elevation={1}>
-      <InputBase
-        className={classes.input}
-        placeholder="Grocery : Amount"
-        fullWidth={true}
-        onChange={handleNewGroceryChange}
-        value={rawValue}
-      />
-      {rawValue && (
-        <IconButton type="submit" color="primary">
-          <CheckBox />
-        </IconButton>
-      )}
-    </Paper>
+    <React.Fragment>
+      <Paper className={classes.root} component="form" onSubmit={handleAddGrocerySubmit} elevation={1}>
+        <InputBase
+          className={classes.input}
+          placeholder="Grocery : Amount"
+          fullWidth={true}
+          value={rawValue}
+          inputRef={inputElement}
+          onChange={handleNewGroceryChange}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+        />
+        {rawValue && (
+          <IconButton type="submit" color="primary">
+            <CheckBox />
+          </IconButton>
+        )}
+      </Paper>
+      <Popper className={classes.popper} open={open} anchorEl={anchorEl}>
+        <div className={classes.poppperContent}>
+          {Object.keys(categories).map((category) => (
+            <Paper
+              key={category}
+              elevation={3}
+              className={`${classes.category} ${getCategoryClass(category as keyof XPalette)}`}
+              onClick={() => toggleSelectedCategory(category as keyof XPalette)}
+            >
+              {selectedCategory === category && <CheckRounded className={classes.check} fontSize="large" />}
+            </Paper>
+          ))}
+        </div>
+      </Popper>
+    </React.Fragment>
   );
 };
 
