@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import { FirebaseContext } from '../../firebase';
 import { Grocery } from '../../firebase/models';
 
-import { IconButton, InputBase, makeStyles, Paper, Popper } from '@material-ui/core';
+import { ClickAwayListener, IconButton, InputBase, makeStyles, Paper, Popper } from '@material-ui/core';
 import { CheckBox, CheckRounded } from '@material-ui/icons';
 import { XPalette, XTheme } from '../../../types/material-ui';
 import { createCategoryClasses } from '../../../shared/theme';
@@ -50,9 +50,10 @@ const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPo
   const [rawValue, setRawValue] = useState('');
   const firebase = useContext(FirebaseContext);
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<keyof XPalette | null>(null);
   const inputElement = useRef<HTMLInputElement>(null);
+  const paperElement = useRef<HTMLDivElement>(null);
 
   const handleAddGrocerySubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +65,7 @@ const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPo
         setGrocery(null);
         setRawValue('');
         setSelectedCategory(null);
-        closePopup();
+        closePopper();
       });
   };
 
@@ -86,18 +87,18 @@ const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPo
     setGrocery(newGrocery);
   };
 
-  const closePopup = () => {
+  const closePopper = () => {
     setAnchorEl(null);
     onPopupChange(false);
   };
 
   const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(paperElement.current);
     onPopupChange(true);
   };
 
-  const handleInputBlur = () => {
-    // closePopup();
+  const handleClickAway = (event: React.MouseEvent<Document, MouseEvent>) => {
+    closePopper();
   };
 
   const open = Boolean(anchorEl);
@@ -134,39 +135,40 @@ const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPo
   };
 
   return (
-    <React.Fragment>
-      <Paper className={classes.root} component="form" onSubmit={handleAddGrocerySubmit} elevation={1}>
-        <InputBase
-          className={classes.input}
-          placeholder="Grocery : Amount"
-          fullWidth={true}
-          value={rawValue}
-          inputRef={inputElement}
-          onChange={handleNewGroceryChange}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-        />
-        {rawValue && (
-          <IconButton type="submit" color="primary">
-            <CheckBox />
-          </IconButton>
-        )}
-      </Paper>
-      <Popper className={classes.popper} open={open} anchorEl={anchorEl}>
-        <div className={classes.poppperContent}>
-          {Object.keys(categories).map((category) => (
-            <Paper
-              key={category}
-              elevation={3}
-              className={`${classes.category} ${getCategoryClass(category as keyof XPalette)}`}
-              onClick={() => toggleSelectedCategory(category as keyof XPalette)}
-            >
-              {selectedCategory === category && <CheckRounded className={classes.check} fontSize="large" />}
-            </Paper>
-          ))}
-        </div>
-      </Popper>
-    </React.Fragment>
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <div>
+        <Paper className={classes.root} component="form" onSubmit={handleAddGrocerySubmit} elevation={1} ref={paperElement}>
+          <InputBase
+            className={classes.input}
+            placeholder="Grocery : Amount"
+            fullWidth={true}
+            value={rawValue}
+            inputRef={inputElement}
+            onChange={handleNewGroceryChange}
+            onFocus={handleInputFocus}
+          />
+          {rawValue && (
+            <IconButton type="submit" color="primary">
+              <CheckBox />
+            </IconButton>
+          )}
+        </Paper>
+        <Popper className={classes.popper} open={open} anchorEl={anchorEl}>
+          <div className={classes.poppperContent}>
+            {Object.keys(categories).map((category) => (
+              <Paper
+                key={category}
+                elevation={3}
+                className={`${classes.category} ${getCategoryClass(category as keyof XPalette)}`}
+                onClick={() => toggleSelectedCategory(category as keyof XPalette)}
+              >
+                {selectedCategory === category && <CheckRounded className={classes.check} fontSize="large" />}
+              </Paper>
+            ))}
+          </div>
+        </Popper>
+      </div>
+    </ClickAwayListener>
   );
 };
 
