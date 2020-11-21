@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 
 import { User } from '../firebase/models';
 import { FirebaseContext } from '../firebase';
@@ -49,27 +50,36 @@ const UserList: React.FC = () => {
   const { users, loading } = state;
   return (
     <div>
-      <h2>Users</h2>
+      <Typography variant="h5" gutterBottom>
+        Users
+      </Typography>
       {loading && <div>Loading...</div>}
-      <ul>
-        {users.map((user) => (
-          <li key={user.uid}>
-            <span>
-              <strong>ID:</strong> {user.uid}
-            </span>
-            <span>
-              <strong>E-Mail:</strong> {user.email}
-            </span>
-            <span>
-              <strong>Username:</strong> {user.username}
-            </span>
-            <button onClick={() => setAdminClickHandler(user.uid)}>Admin</button>
-            <span>
-              <Link to={{ pathname: `${ROUTES.ADMIN}/${user.uid}`, state: { user } }}>Details</Link>
-            </span>
-          </li>
-        ))}
-      </ul>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>E-Mail</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>Admin</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.uid}>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>
+                  <button onClick={() => setAdminClickHandler(user.uid)}>Admin</button>
+                </TableCell>
+                <TableCell>
+                  <Link to={{ pathname: `${ROUTES.ADMIN}/${user.uid}`, state: { user } }}>Details</Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

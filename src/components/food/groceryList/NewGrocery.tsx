@@ -24,10 +24,9 @@ const useStyles = makeStyles((theme: XTheme) => ({
     marginTop: theme.spacing(2),
     zIndex: 20,
   },
-  poppperContent: {
+  categoryWrapper: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    // background: theme.palette.grey[400],
     maxWidth: theme.spacing(4 * 10),
     display: 'flex',
     flexWrap: 'wrap',
@@ -48,10 +47,10 @@ const useStyles = makeStyles((theme: XTheme) => ({
 const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPopupChange }) => {
   const [grocery, setGrocery] = useState(null as Partial<Grocery> | null);
   const [rawValue, setRawValue] = useState('');
-  const firebase = useContext(FirebaseContext);
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<keyof XPalette | null>(null);
+  const firebase = useContext(FirebaseContext);
+  const classes = useStyles();
   const inputElement = useRef<HTMLInputElement>(null);
   const paperElement = useRef<HTMLDivElement>(null);
 
@@ -154,17 +153,19 @@ const NewGrocery: React.FC<{ onPopupChange: (open: boolean) => void }> = ({ onPo
           )}
         </Paper>
         <Popper className={classes.popper} open={open} anchorEl={anchorEl}>
-          <div className={classes.poppperContent}>
-            {Object.keys(categories).map((category) => (
-              <Paper
-                key={category}
-                elevation={3}
-                className={`${classes.category} ${getCategoryClass(category as keyof XPalette)}`}
-                onClick={() => toggleSelectedCategory(category as keyof XPalette)}
-              >
-                {selectedCategory === category && <CheckRounded className={classes.check} fontSize="large" />}
-              </Paper>
-            ))}
+          <div>
+            <div className={classes.categoryWrapper}>
+              {Object.keys(categories).map((category) => (
+                <Paper
+                  key={category}
+                  elevation={3}
+                  className={`${classes.category} ${getCategoryClass(category as keyof XPalette)}`}
+                  onClick={() => toggleSelectedCategory(category as keyof XPalette)}
+                >
+                  {selectedCategory === category && <CheckRounded className={classes.check} fontSize="large" />}
+                </Paper>
+              ))}
+            </div>
           </div>
         </Popper>
       </div>

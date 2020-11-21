@@ -17,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     boxShadow: 'none',
   },
+  toolbar: {
+    [theme.breakpoints.only('xs')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+  },
   logo: {
     height: '48px',
   },
@@ -32,7 +38,9 @@ const MenuAppBar: React.FC = () => {
 
   return (
     <AppBar position="static" className={classes.appBar}>
-      <Toolbar>{authUser ? <MenuAppBarAuth user={authUser} classes={classes} /> : <MenuAppBarNonAuth classes={classes} />}</Toolbar>
+      <Toolbar className={classes.toolbar}>
+        {authUser ? <MenuAppBarAuth user={authUser} classes={classes} /> : <MenuAppBarNonAuth classes={classes} />}
+      </Toolbar>
     </AppBar>
   );
 };

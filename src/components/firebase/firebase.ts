@@ -17,6 +17,7 @@ const config = {
 const REFS = {
   USERS: 'users',
   AUTHENTICATIONS: 'authentications',
+  GROCERY_CATEGORIES: 'groceryCategogies',
   GROCERIES: 'groceries',
 };
 
@@ -102,6 +103,8 @@ class Firebase {
     });
 
   /// *** GroceryList API ***
+
+  groceryCategories = () => this.db.ref(REFS.GROCERY_CATEGORIES);
 
   groceryList = () => this.db.ref(REFS.GROCERIES);
 }
