@@ -8,7 +8,7 @@ import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { UserItem, UserList } from '.';
 import { Container, makeStyles, Typography } from '@material-ui/core';
-import GroceryCategoryList from './GroceryCategoryList';
+import { GroceryCategoryList } from './groceryCategoryList';
 
 const styles = makeStyles((theme) => ({
   root: {

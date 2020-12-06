@@ -1,22 +1,8 @@
-import {
-  IconButton,
-  InputBase,
-  makeStyles,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
+import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { FirebaseContext } from '../firebase';
-import { GroceryCategorie } from '../firebase/models';
+import { FirebaseContext } from '../../firebase';
+import { GroceryCategorie } from '../../firebase/models';
+import ListToolbar from './GroceryCategoryListToolbar';
 
 const useStyles = makeStyles((theme) => ({
   categoryMarker: {
@@ -67,7 +53,9 @@ const GroceryCategoryList: React.FC = () => {
       description: 'Tiefkühl',
     };
 
-    firebase?.groceryCategories().push(newCategorie);
+    //firebase?.groceryCategories().push(newCategorie);
+
+    console.log({ newCategorie });
   };
 
   const { loading, groceryCategories } = state;
@@ -75,19 +63,8 @@ const GroceryCategoryList: React.FC = () => {
   return (
     <div>
       {loading && <div>Loading...</div>}
-      <button onClick={add}>Add</button>
-      <InputBase type="color" style={{ width: '80px' }} />
       <Paper>
-        <Toolbar>
-          <Typography variant="h6" className={classes.toolbarTitle}>
-            Categories
-          </Typography>
-          <Tooltip title="Add">
-            <IconButton>
-              <AddCircle color="primary" />
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
+        <ListToolbar onAddClick={add} />
         <TableContainer>
           <Table>
             <TableHead>
