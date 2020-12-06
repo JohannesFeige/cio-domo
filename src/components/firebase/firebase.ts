@@ -17,7 +17,7 @@ const config = {
 const REFS = {
   USERS: 'users',
   AUTHENTICATIONS: 'authentications',
-  GROCERY_CATEGORIES: 'groceryCategogies',
+  GROCERY_CATEGORIES: 'groceryCategories',
   GROCERIES: 'groceries',
 };
 

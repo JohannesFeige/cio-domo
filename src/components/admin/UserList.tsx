@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
 
 import { User } from '../firebase/models';
 import { FirebaseContext } from '../firebase';
@@ -50,36 +50,40 @@ const UserList: React.FC = () => {
   const { users, loading } = state;
   return (
     <div>
-      <Typography variant="h5" gutterBottom>
-        Users
-      </Typography>
       {loading && <div>Loading...</div>}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>E-Mail</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Admin</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.uid}>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>
-                  <button onClick={() => setAdminClickHandler(user.uid)}>Admin</button>
-                </TableCell>
-                <TableCell>
-                  <Link to={{ pathname: `${ROUTES.ADMIN}/${user.uid}`, state: { user } }}>Details</Link>
-                </TableCell>
+      <Paper>
+        <Toolbar>
+          <Typography variant="h6" gutterBottom>
+            Users
+          </Typography>
+        </Toolbar>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>E-Mail</TableCell>
+                <TableCell>Username</TableCell>
+                <TableCell>Admin</TableCell>
+                <TableCell></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user.uid}>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>
+                    <button onClick={() => setAdminClickHandler(user.uid)}>Admin</button>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={{ pathname: `${ROUTES.ADMIN}/${user.uid}`, state: { user } }}>Details</Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </div>
   );
 };

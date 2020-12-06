@@ -3,3 +3,4 @@
 export type User = import('./user').default;
 export type DbUser = import('./dbUser').default;
 export type Grocery = import('./grocery').default;
+export type GroceryCategorie = import('./groceryCategorie').default;
