@@ -2,7 +2,8 @@ import React, { useState, useContext, useRef } from 'react';
 import { FirebaseContext } from '../../firebase';
 import { Grocery } from '../../firebase/models';
 
-import { ClickAwayListener, IconButton, InputBase, makeStyles, Paper, Popper } from '@material-ui/core';
+import { ClickAwayListener, IconButton, InputBase, Paper, Popper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { CheckBox, CheckRounded } from '@material-ui/icons';
 import { XPalette, XTheme } from '../../../types/material-ui';
 import { createCategoryClasses } from '../../../shared/theme';
